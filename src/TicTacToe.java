@@ -14,6 +14,7 @@ import java.util.Scanner;
 
 public class TicTacToe
 {
+    private TicTacToeViewer window;
     /** Board Markers **/
     public static final String X_MARKER = "X";
     public static final String O_MARKER = "O";
@@ -44,9 +45,10 @@ public class TicTacToe
     public TicTacToe() {
         // Initialize Squares in the board
         this.board = new Square[3][3];
+        window = new TicTacToeViewer(this);
         for(int row = 0; row < this.board.length; row++) {
             for(int col = 0; col< this.board[row].length; col++) {
-                this.board[row][col] = new Square(row, col);
+                this.board[row][col] = new Square(row, col, window);
             }
         }
 
@@ -116,6 +118,7 @@ public class TicTacToe
             int col = input.nextInt();
             if(this.pickLocation(row, col)) {
                 this.takeTurn(row, col);
+                window.repaint();
             } else {
                 System.out.println("That space is taken, or you entered an invalid row/col");
             }
@@ -127,14 +130,17 @@ public class TicTacToe
         // Determine if there was a winner
         if(!this.checkWin()) {
             System.out.println("Game ends in a tie!");
+            window.repaint();
         } else {
             this.markWinningSquares();
             if (this.turn%2 == 0) {
                 this.winner = O_MARKER;
                 System.out.println("O Wins!");
+                window.repaint();
             } else {
                 this.winner = X_MARKER;
                 System.out.println("X Wins!");
+                window.repaint();
             }
         }
     }
